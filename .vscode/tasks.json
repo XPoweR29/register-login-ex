@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "typescript",
+			"tsconfig": "../../../../../../C:/Users/pawel/Desktop/simple register and login/back/tsconfig.json",
+			"option": "watch",
+			"problemMatcher": ["$tsc-watch"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "tsc: monitoruj – ../../../../../../C:/Users/pawel/Desktop/simple register and login/back/tsconfig.json"
+		}
+	]
+}
