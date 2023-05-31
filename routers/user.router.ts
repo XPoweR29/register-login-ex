@@ -5,6 +5,8 @@ import { User } from "../types";
 import * as dotenv from 'dotenv';
 import { compare } from "bcrypt";
 import { authMiddleware } from "../middleware/authMiddleware";
+import { pool } from "../utils/db";
+import { saveRefreshToken } from "../utils/saveRefreshToken";
 
 dotenv.config();
 
@@ -41,8 +43,14 @@ userRouter
         username: user.username,
         email: user.email,
     }
-    const token = jwt.sign(payload, process.env.ACCESS_TOKEN, {expiresIn: '15s'});
-    res.json({token});
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN, {expiresIn: '15s'});
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN);
+    saveRefreshToken(user.id, refreshToken);
+    res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+    });
+
+    res.json({accessToken});
 })
 
 .post('/register', (req, res) => {
