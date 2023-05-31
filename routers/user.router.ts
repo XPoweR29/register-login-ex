@@ -13,7 +13,14 @@ export const userRouter = Router();
 
 userRouter
 
-.post('/login', authMiddleware, async(req, res) => {
+.get('/', authMiddleware, (req, res) => {
+    res.json({
+        isSuccess: true,
+        message: 'User logged in'
+    });
+})
+
+.post('/login', async(req, res) => {
     const user = await UserRecord.getUserByEmail(req.body.email);
     if(!user){
         return res.status(401).json({
@@ -22,7 +29,7 @@ userRouter
         });
     }
 
-    if(!(await compare(req.body.pwd, user.pwd))) {
+    if(!req.body.pwd || !(await compare(req.body.pwd, user.pwd))) {
         return res.status(401).json({
             isSucess: false,
             message: 'Invalid password'
