@@ -51,6 +51,14 @@ export class UserRecord {
         return results.length === 0 ? null : new UserRecord(results[0]);
     }
 
+    static async getUserByRefreshToken(refreshToken: string): Promise<UserRecord> {
+        const [results] = (await pool.execute("SELECT * FROM `users` WHERE `refreshToken` =:refreshToken", {
+            refreshToken,
+        })) as UserRecordResults;
+
+        return results.length === 0 ? null : new UserRecord(results[0]);
+    }
+
     async update(data: Partial<User>): Promise<UserRecord> {
         await pool.execute("UPDATE `users` SET username=:username, email=:email, pwd=:pwd WHERE id=:id", {
             id: this.id,
