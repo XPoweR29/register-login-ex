@@ -54,4 +54,11 @@ userRouter
 		const user = new UserRecord(req.body);
 		user.insert();
 		res.json({ isSucces: true });
-	});
+	})
+
+    .delete('/logout', async(req, res) => {
+        const refreshToken = req.cookies.jwt;
+        await UserRecord.removeRefreshToken(refreshToken);
+        res.clearCookie('jwt');
+        res.json('Successfully log out');
+    })

@@ -79,4 +79,8 @@ export class UserRecord {
 
         console.log(`User ${this.username} has been deleted`);
     }
+
+    static async removeRefreshToken(token: string): Promise<void> {
+        await pool.execute("UPDATE `users` SET refreshToken = NULL WHERE refreshToken=:token", {token});
+    }
 }
